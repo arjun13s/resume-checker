@@ -1,0 +1,21 @@
+JOHN DOE
+Email: john.doe@email.com
+Phone: (555) 123-4567
+
+PROFESSIONAL SUMMARY
+Experienced software developer with 5 years of experience in web development.
+
+EXPERIENCE
+Software Developer | Tech Company Inc. | 2020 - Present
+- Helped develop web applications
+- Assisted with code reviews
+- Worked on various projects
+
+EDUCATION
+Bachelor of Science in Computer Science
+State University | 2020
+
+SKILLS
+- Programming
+- Problem solving
+- Communication

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Checker - Analyze Your Resume</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📄 Resume Checker</h1>
+            <p class="subtitle">Upload your resume and get instant feedback on how to improve it</p>
+        </header>
+
+        <main>
+            <!-- Upload Section -->
+            <div class="upload-section" id="uploadSection">
+                <div class="upload-box" id="uploadBox">
+                    <div class="upload-icon">📎</div>
+                    <h2>Upload Your Resume</h2>
+                    <p>Supported formats: PDF, DOCX, DOC, TXT</p>
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="file" id="fileInput" name="file" accept=".pdf,.docx,.doc,.txt" required>
+                        <label for="fileInput" class="file-label">
+                            <span class="file-button">Choose File</span>
+                            <span class="file-name" id="fileName">No file selected</span>
+                        </label>
+                        <button type="submit" class="analyze-button" id="analyzeButton">
+                            Analyze Resume
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Loading Section -->
+            <div class="loading-section" id="loadingSection" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing your resume...</p>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <!-- Summary Card -->
+                <div class="summary-card">
+                    <h2>Analysis Summary</h2>
+                    <div class="score-display">
+                        <div class="score-circle" id="scoreCircle">
+                            <span class="score-value" id="scoreValue">0</span>
+                            <span class="score-label">/100</span>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="wordCount">0</div>
+                            <div class="stat-label">Words</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value critical" id="criticalCount">0</div>
+                            <div class="stat-label">Critical Issues</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value warning" id="warningCount">0</div>
+                            <div class="stat-label">Warnings</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value suggestion" id="suggestionCount">0</div>
+                            <div class="stat-label">Suggestions</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Issues by Category -->
+                <div class="issues-section" id="issuesSection">
+                    <h2>Feedback by Category</h2>
+                    <div id="issuesContainer"></div>
+                </div>
+
+                <!-- All Issues List -->
+                <div class="all-issues-section">
+                    <h2>All Issues</h2>
+                    <div id="allIssuesContainer"></div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn-secondary" onclick="resetForm()">Analyze Another Resume</button>
+                </div>
+            </div>
+
+            <!-- Error Section -->
+            <div class="error-section" id="errorSection" style="display: none;">
+                <div class="error-box">
+                    <div class="error-icon">⚠️</div>
+                    <h2>Error</h2>
+                    <p id="errorMessage"></p>
+                    <button class="btn-secondary" onclick="resetForm()">Try Again</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Resume Checker Engine - Get actionable feedback to improve your resume</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
