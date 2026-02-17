@@ -83,7 +83,3 @@ python main.py resume.pdf -o report.txt
 │   └── script.js          # Web UI JavaScript
 └── requirements.txt        # Python dependencies
 ```
-
-## Deploy to the web
-
-You can host the web app for free on [Render](https://render.com), [Railway](https://railway.app), or [PythonAnywhere](https://pythonanywhere.com). Push this repo to GitHub, then connect it to your chosen host—they run `pip install -r requirements.txt` and start the app. Users visit your URL and upload resumes in the browser; no install needed.
