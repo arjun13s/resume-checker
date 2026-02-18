@@ -1,0 +1,5 @@
+@import 'tailwindcss' source(none);
+/* Scan entire src (app + components) so Tailwind generates classes used in JSX */
+@source '../../**/*.{js,ts,jsx,tsx}';
+
+@import 'tw-animate-css';

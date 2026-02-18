@@ -2,8 +2,11 @@
 Resume Analyzer - Core analysis logic for evaluating resumes
 """
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
+
+# Faculty options for degree-based rating
+VALID_FACULTIES = ('sciences', 'engineering', 'arts', 'business')
 
 
 @dataclass
@@ -34,14 +37,23 @@ class ResumeAnalyzer:
             'assisted', 'helped', 'tried', 'attempted', 'hopefully',
             'maybe', 'somewhat', 'kind of', 'sort of'
         ]
+        
+        # Faculty-specific keywords that strengthen the resume for that field
+        self.faculty_keywords = {
+            'sciences': ['research', 'publication', 'lab', 'methodology', 'data analysis', 'experiment', 'journal', 'hypothesis', 'peer-reviewed'],
+            'engineering': ['project', 'technical', 'design', 'implementation', 'software', 'system', 'tool', 'programming', 'development', 'build'],
+            'arts': ['portfolio', 'creative', 'exhibition', 'design', 'curation', 'visual', 'installation', 'commission', 'collaboration'],
+            'business': ['revenue', 'growth', 'strategy', 'management', 'leadership', 'budget', 'client', 'sales', 'marketing', 'analytics', 'roi', 'kpi'],
+        }
     
-    def analyze(self, resume_text: str) -> List[Issue]:
+    def analyze(self, resume_text: str, faculty: Optional[str] = None) -> List[Issue]:
         """
-        Analyze resume text and return list of issues
+        Analyze resume text and return list of issues.
         
         Args:
             resume_text: The extracted text from the resume
-            
+            faculty: Optional field of degree - 'sciences', 'engineering', 'arts', or 'business'
+                     Used to tailor checks and rating.
         Returns:
             List of Issue objects
         """
@@ -74,7 +86,69 @@ class ResumeAnalyzer:
         # Check for common mistakes
         issues.extend(self._check_common_mistakes(resume_text))
         
+        # Faculty-specific checks (adds issues if resume doesn't match field)
+        if faculty and faculty in VALID_FACULTIES:
+            issues.extend(self._check_faculty_fit(resume_text, faculty))
+        
         return issues
+    
+    def _check_faculty_fit(self, text: str, faculty: str) -> List[Issue]:
+        """Add suggestions when resume is missing faculty-relevant content."""
+        issues = []
+        text_lower = text.lower()
+        keywords = self.faculty_keywords.get(faculty, [])
+        found = sum(1 for k in keywords if k in text_lower)
+        
+        if faculty == 'sciences' and found < 2:
+            issues.append(Issue(
+                severity='suggestion',
+                category='keywords',
+                message='Few science-specific terms for a Sciences profile',
+                suggestion='Highlight research, publications, lab work, methodology, or data analysis to strengthen your resume for science roles.'
+            ))
+        elif faculty == 'engineering' and found < 2:
+            issues.append(Issue(
+                severity='suggestion',
+                category='keywords',
+                message='Few engineering-specific terms for an Engineering profile',
+                suggestion='Highlight technical skills, projects, tools, and concrete outcomes to better match engineering expectations.'
+            ))
+        elif faculty == 'arts' and found < 2:
+            issues.append(Issue(
+                severity='suggestion',
+                category='keywords',
+                message='Few arts/creative terms for an Arts profile',
+                suggestion='Include portfolio work, exhibitions, creative projects, or collaborative work to align with arts and design roles.'
+            ))
+        elif faculty == 'business' and found < 2:
+            issues.append(Issue(
+                severity='suggestion',
+                category='keywords',
+                message='Few business-specific terms for a Business profile',
+                suggestion='Highlight leadership, strategy, revenue, growth, client work, or metrics (e.g. ROI, KPIs) to strengthen your resume for business roles.'
+            ))
+        
+        return issues
+    
+    def get_faculty_score_adjustment(self, resume_text: str, faculty: Optional[str]) -> int:
+        """
+        Returns a score adjustment (-2 to +5) based on how well the resume
+        matches the selected faculty. Used to factor degree field into the rating.
+        """
+        if not resume_text or not faculty or faculty not in VALID_FACULTIES:
+            return 0
+        text_lower = resume_text.lower()
+        keywords = self.faculty_keywords.get(faculty, [])
+        found = sum(1 for k in keywords if k in text_lower)
+        if found >= 4:
+            return 5
+        if found >= 3:
+            return 3
+        if found >= 2:
+            return 1
+        if found >= 1:
+            return 0
+        return -2
     
     def _check_essential_sections(self, text: str) -> List[Issue]:
         """Check if essential sections are present"""

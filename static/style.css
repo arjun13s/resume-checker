@@ -107,6 +107,51 @@ main {
     font-style: italic;
 }
 
+.faculty-label {
+    color: #555;
+    font-weight: 600;
+    margin: 24px 0 10px;
+}
+
+.faculty-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.faculty-btn {
+    padding: 10px 24px;
+    border: 2px solid #667eea;
+    background: #fff;
+    color: #667eea;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.faculty-btn:hover {
+    background: #f0f2ff;
+}
+
+.faculty-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.faculty-badge {
+    display: inline-block;
+    margin-bottom: 16px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
 .analyze-button {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;

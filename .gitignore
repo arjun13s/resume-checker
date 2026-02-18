@@ -39,3 +39,7 @@ Thumbs.db
 *.docx
 reports/
 output/
+
+# Frontend build (optional; build with: cd frontend && npm run build)
+frontend/node_modules/
+frontend/dist/

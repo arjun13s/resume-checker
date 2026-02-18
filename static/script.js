@@ -4,6 +4,15 @@ document.getElementById('fileInput').addEventListener('change', function(e) {
     document.getElementById('fileName').textContent = fileName;
 });
 
+// Faculty button selection
+document.querySelectorAll('.faculty-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.faculty-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('facultyInput').value = this.dataset.faculty;
+    });
+});
+
 // Form submission
 document.getElementById('uploadForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -22,6 +31,8 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
     // Create form data
     const formData = new FormData();
     formData.append('file', file);
+    const faculty = document.getElementById('facultyInput').value;
+    if (faculty) formData.append('faculty', faculty);
     
     try {
         const response = await fetch('/analyze', {
@@ -66,6 +77,17 @@ function showResults(data) {
     
     // Update summary
     document.getElementById('scoreValue').textContent = data.statistics.score;
+    const facultyBadge = document.getElementById('facultyBadge');
+    if (data.faculty) {
+        facultyBadge.style.display = 'block';
+        facultyBadge.textContent = 'Rated for: ' + data.faculty.charAt(0).toUpperCase() + data.faculty.slice(1);
+        if (data.statistics.faculty_adjustment !== undefined && data.statistics.faculty_adjustment !== 0) {
+            const adj = data.statistics.faculty_adjustment;
+            facultyBadge.textContent += adj > 0 ? ' (+' + adj + ' to score)' : ' (' + adj + ' to score)';
+        }
+    } else {
+        facultyBadge.style.display = 'none';
+    }
     document.getElementById('wordCount').textContent = data.statistics.word_count.toLocaleString();
     document.getElementById('criticalCount').textContent = data.summary.critical;
     document.getElementById('warningCount').textContent = data.summary.warnings;
@@ -184,6 +206,8 @@ function displayAllIssues(issues) {
 function resetForm() {
     document.getElementById('uploadForm').reset();
     document.getElementById('fileName').textContent = 'No file selected';
+    document.getElementById('facultyInput').value = '';
+    document.querySelectorAll('.faculty-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('uploadSection').style.display = 'block';
     document.getElementById('resultsSection').style.display = 'none';
     document.getElementById('errorSection').style.display = 'none';

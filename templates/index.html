@@ -26,6 +26,14 @@
                             <span class="file-button">Choose File</span>
                             <span class="file-name" id="fileName">No file selected</span>
                         </label>
+                        <p class="faculty-label">Rate my resume for (degree field):</p>
+                        <div class="faculty-buttons">
+                            <button type="button" class="faculty-btn" data-faculty="sciences">Sciences</button>
+                            <button type="button" class="faculty-btn" data-faculty="engineering">Engineering</button>
+                            <button type="button" class="faculty-btn" data-faculty="arts">Arts</button>
+                            <button type="button" class="faculty-btn" data-faculty="business">Business</button>
+                        </div>
+                        <input type="hidden" name="faculty" id="facultyInput" value="">
                         <button type="submit" class="analyze-button" id="analyzeButton">
                             Analyze Resume
                         </button>
@@ -44,6 +52,7 @@
                 <!-- Summary Card -->
                 <div class="summary-card">
                     <h2>Analysis Summary</h2>
+                    <p class="faculty-badge" id="facultyBadge" style="display: none;"></p>
                     <div class="score-display">
                         <div class="score-circle" id="scoreCircle">
                             <span class="score-value" id="scoreValue">0</span>

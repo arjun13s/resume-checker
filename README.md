@@ -29,17 +29,28 @@ python -m pip install --user -r requirements.txt
 
 ### Web Application (Recommended)
 
-1. Start the web server:
+**Option A – New UI (beach theme, degree buttons) at localhost:5000**
+
+1. Build the React frontend once (requires Node.js):
+   ```bash
+   cd frontend
+   npm install
+   npm run build
+   cd ..
+   ```
+2. Start the backend:
+   ```bash
+   python app.py
+   ```
+3. Open **http://localhost:5000** – you’ll see the new UI. Upload a resume, pick a degree (Sciences / Engineering / Arts / Business), and click Analyze.
+
+**Option B – Old UI (purple theme) at localhost:5000**
+
+If you don’t build the frontend, the same command still works:
 ```bash
 python app.py
 ```
-
-2. Open your browser and navigate to:
-```
-http://localhost:5000
-```
-
-3. Upload your resume file and get instant feedback!
+Open **http://localhost:5000** – you’ll see the original HTML upload page.
 
 ### Command Line Interface
 
