@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   FileText, Upload, Sparkles, CheckCircle2,
-  TrendingUp, AlertCircle, Layout, Search, ListChecks, ArrowDown,
+  TrendingUp, AlertCircle, Layout, Search, ListChecks, ArrowDown, HelpCircle, X,
 } from 'lucide-react';
 import { PalmTree } from './components/PalmTree';
 import { ResultsPage } from './components/ResultsPage';
@@ -126,6 +126,7 @@ export default function App() {
   const [selectedDegree, setSelectedDegree] = useState<string | null>(null);
   const [reviewSections, setReviewSections] = useState<ReviewSection[]>([]);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [showAbout, setShowAbout] = useState(false);
 
   const degrees = [
     { id: 'sciences', label: 'Sciences', skinColor: '#FFCC99', shirtColor: '#3B82F6' },
@@ -525,6 +526,65 @@ export default function App() {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
       />
+
+      {/* ==================== ABOUT BUTTON (fixed bottom-right) ==================== */}
+      <motion.button
+        onClick={() => setShowAbout(true)}
+        className="fixed bottom-5 right-5 z-50 w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 active:scale-95"
+        style={{ backgroundColor: '#2A2A2A' }}
+        whileHover={{ boxShadow: '0 6px 20px rgba(0,0,0,0.25)' }}
+        aria-label="About the author"
+      >
+        <HelpCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" strokeWidth={2} />
+      </motion.button>
+
+      {/* About popup */}
+      <AnimatePresence>
+        {showAbout && (
+          <>
+            <motion.div
+              key="about-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm"
+              onClick={() => setShowAbout(false)}
+            />
+            <motion.div
+              key="about-card"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="fixed bottom-20 right-5 z-50 w-[280px] sm:w-[320px] rounded-2xl p-5 sm:p-6 shadow-xl"
+              style={{ backgroundColor: '#FFFDF7', border: '1px solid rgba(0,0,0,0.08)' }}
+            >
+              <button
+                onClick={() => setShowAbout(false)}
+                className="absolute top-3 right-3 p-1 rounded-full hover:bg-black/5 transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+              <img src="/waterloo-logo.png" alt="University of Waterloo" className="w-full max-w-[200px] mx-auto mb-3" />
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2">About the Author</h3>
+              <p className="text-sm text-gray-600 leading-relaxed mb-3">
+                Hi! I'm Arjun Singh. I go to the University of Waterloo, and I am a Math/CS major!
+              </p>
+              <div className="text-sm text-gray-600 leading-relaxed">
+                <p className="font-medium text-gray-700 mb-1">How to use:</p>
+                <ul className="list-disc list-inside space-y-0.5 text-xs sm:text-sm">
+                  <li>Upload your resume file</li>
+                  <li>Select your degree</li>
+                  <li>Click Analyze</li>
+                  <li>Wait for the analysis to complete</li>
+                  <li>View the results!</li>
+                </ul>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

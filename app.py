@@ -58,6 +58,15 @@ def frontend_assets(filename):
     return '', 404
 
 
+@app.route('/<path:filename>')
+def frontend_static(filename):
+    """Serve other static files from the frontend dist (images, etc.)."""
+    filepath = os.path.join(FRONTEND_DIST, filename)
+    if os.path.isfile(filepath):
+        return send_from_directory(FRONTEND_DIST, filename)
+    return '', 404
+
+
 @app.route('/analyze', methods=['POST'])
 def analyze():
     """Analyze uploaded resume file"""
